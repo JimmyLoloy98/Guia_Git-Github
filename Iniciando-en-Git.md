@@ -113,4 +113,34 @@ $ **git remote set-url origin [git@github.com:username/repository.git]**: De est
 
 ### Creando etiquetas para un mejor versionamiento:
 
-$ **git tag -a [version] -m "nombre_de_tag" [hash_commit]**
+> *Debes tener copiado el hash del commit, al que quieres agreagrle un tag*
+
+$ **git tag -a [version] -m "nombre_de_tag" [hash_commit]**: Crear etiquetas de versión hacia un commit, el que se le indique y con el nombre que nosotros le indiquemos. *Ejm: (v0.1)*
+
+$ **git show-ref --tags**: Para poder ver todos los tags que se han creado.
+
+$ **git tag**: De igual manera, nos muestra todas las etiquetas que se tienen creadas.
+
+> **PROTIP**: Como buena práctica es traer nuevamente los cambios guardados en la nube de GitHub (git pull origin master).
+
+Y luego vovler a enviar los cambios del local.
+
+$ **git push origin --tags**: Esto cargará los tags creados hacia GitHub.
+
+$ **git tag -d [nombre_de_tag]**: Con este comando podrás eliminar el tag que se le indiques, solo en nuestro local.
+
+> **PROTIP**: Como te indiqué, como buena práctica deben traer los cambios,*(git pull origin master)*.
+
+$ **git push origin :refs/tags/[nombre_de_tag]**: Este comando, eliminará en GitHub al 100%, la etiqueta indicada. *(Ten cuidado al usarlo)*
+
+### Subir otras ramas a nuestro repositorio en GitHub:
+
+$ **git show-branch --all**: Mostrar las ramas, con información adicional sobre su historia.
+
+> **PROTIP**: Al crear una rama, ten en cuenta que desde la rama donde estés, se creará una versión alterna. Procura estar en la rama donde todos los cambios estén actualizados. *(Ejm: master)* Utiliza **git checkout [nombre_rama]** para moverte a la rama más actualizada.
+
+$ **git push origin [nombre_otra_rama]**: Subir los cambios desde la rama que acabas de crear e hiciste cambios *(en caso sea diferente a **master**)*.
+
+### Configurando nuevos colaboradores al flujo de trabajo:
+
+> Primero debemos incluir a una nueva persona desde las configuraciones de GitHub. Ya sea por su correo o su username en la plataforma.
