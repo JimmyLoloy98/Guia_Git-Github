@@ -144,3 +144,5 @@ $ **git push origin [nombre_otra_rama]**: Subir los cambios desde la rama que ac
 ### Configurando nuevos colaboradores al flujo de trabajo:
 
 > Primero debemos incluir a una nueva persona desde las configuraciones de GitHub. Ya sea por su correo o su username en la plataforma.
+
+[WIP]. . .
