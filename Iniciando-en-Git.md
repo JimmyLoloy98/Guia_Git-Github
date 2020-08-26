@@ -57,7 +57,7 @@ $ **git checkout [hash_number]**: Por otro lado, este comando nos permite 'hecha
 
 ### Combinando ramas y solucionando conflictos:
 
-$ **git merge [name_branch]**: Este comando hará una fusión desde donde se le indique con el nombre de la rama.
+$ **git merge [name_branch]**: Este comando hará una fusión desde donde se le indique con el nombre de la rama, todo esto en el local.
 
 > **PROTIP**: Para una fusión adecuada, debes asegurarte de estar en la rama a la que quieres que todo se fusione (git checkout [name_branch]). Recuerda que la fusión se realiza desde la rama a la que apuntas hacia donde estás ubicada.
 
@@ -146,3 +146,97 @@ $ **git push origin [nombre_otra_rama]**: Subir los cambios desde la rama que ac
 > Primero debemos incluir a una nueva persona desde las configuraciones de GitHub. Ya sea por su correo o su username en la plataforma.
 
 [WIP]. . .
+
+### Buenas prácticas de trabajo con Git y GitHub:
+
+> **PROTIP**: Evitar cargar archivos binarios dentro de los repositorios (imágenes, etc). Aquí hay una solución.
+
+$ **touch .gitignore**: Debes crear un archivo con este nombre exacto. Y agregar todos los archivos, por lo general binarios, y entre otros que no son necesarios subir al repositorio, porque aumentan el tamaño y en general,es una muy mala práctica.
+
+$ **touch README.md**: Este archivo nos permitirá hacer nuestra repo, mucho más explicita para las personas que lo visitan, esto debe contener información fundamental respecto de que trata el repositorio (titulos, enlaces, imágenes, tablas, etc, etc).
+
+$ **username.github.io**: Al crear un repositorio con este nombre, estaremos haciendo uso de un servicio de hosting gratuito que nos brinda GitHub, para poder alojar nuestro proyecto Open Source en internet.
+
+> **PROTIP**: Los GH-Pages, lo activas desde el apartado *Settings/gh-pages* de nuestro repositorio que queremos liberar hacia el mundo. Solo recuerda que el nombre que debe tener este repositorio, debe ser el mismo que te muestro anteriormente.
+
+### Alterando la historia de manera silenciosa:
+
+> **PROTIP**: Este comando se debe usar solamente en local, para modificar cambios que sean realmente necesarios. De otro modo no debemos usar el **rebase** para la historia de nuestros repositorio, y mucho menos llevarlos a GitHub sin haberlos terminado. 
+> 
+> Recuerda que el reporitorio remoto debe mantenerse lo más limpia posible de ramas, conflictos, alteraciones de historias.
+
+*Ejm: Hemos hecho cambios a ramas MASTER y FIX al mismo tiempo, (estos cambios pueden ser en el mismo archivo y mismas lineas). Lo que hará **git rebase** será juntar ambas ramas, **sin borrar ningún cambio**, es decir "reescribir la historia", y hacer como si está separación de ramas nunca hubiese existido, una vez subidos al repositorio remoto || GitHub.*
+
+$ **git rebase [master]**: Ubicandonos primero en la rama FIX *(git checkout fix)*, haremos uso de este comando para unir la rama MASTER. (primero se hace el **rebase** a la rama que quiero desaparecer de la historia).
+
+$ **git rebase [fix]** Luego debemos ubicarnos en la rama MASTER *(git checkout master)*, para unir la rama master hacia FIX, como buena práctica.
+
+Procura que esto sea hecho en el orden correcto (la que te indiqué atrás). De otra manera podrías generar conflictos inesperados, que tendrías que solucionar usando *git reset*, que es algo que no queremos.
+
+$ **git branch -D [fix]**: Pasamos a eliminar esta rama, que solo nos debía servir para solucionar errores.
+
+$ **git pull origin master**: Traemos cambios, como buena práctica.
+
+$ **git push origin master**: Subimos los cambios realizados a remoto. Te daraś cuenta que jamás existió una rama tal, y la historia se mantiene en orden.
+
+### Un almacenamiento temporal que te puede salvar la vida:
+
+$ **git stash**: Esto es un espacio temporal, que utilizaremos para guardar los últimos cambios (que no hayan sido añadidos ni commiteados al stage), y que puedas hacer commit en otra rama.
+
+$ **git stash pop**: Una vez ubicado en otra rama, necesitas ejecutar este comando, para que esos cambios almacenados en una memoria temporal sean puestos a la disposición de esta rama. Una vez hecho esto, podremos ser libre de commitear los cambios.
+
+$ **git stash list**: Este comando nos muestra todos los cambios que almacenamos en el espacio temporal.
+
+$ **git stash drop**: En este caso eliminarás los cambios almacenados en el temporal, para revertir hasta el último commit realizado.
+
+### Haciendo limpieza de lo innecesario:
+
+$ **git clea --dry-run**: Nos mostrará que archivos es capaz de eliminar
+
+$ **git clean -f**: Eliminará aquellos archivos que GIT considerará innecesarios.
+
+> **PROTIP**: Si bien es cierto que este comando elimina de manera certera archivos innecesarios, debes tener en cuenta que no borrará archivos que están **trackeados** por git, o archivos que se encuentren dentro del **.gitignore**.
+
+$ **git clean -df**: Este comando si borrará archivos duplicados, aún así estén trackeados.
+
+### Recontruyendo commits:
+
+$ **git commit --amend**: Este comando será de mucha utilidad, en el momento en el que hayamos hecho un commit, pero luego se nos olvidó que ese commit debía tener otro cambio adicional. Asi que primero realizamos ese cambio, lo añadimos al stage, y al momento de hacer commit, hacemos uso del **--amend** para que el último commit se reescriba en si mismo con todo éste último cambio.
+
+### Reseteando errores trágicos!:
+
+$ **git reflog**: Muestra la historia de todos, TODOS, los cambios que se hicieron en GIT. **(GIT nunca elimina nada)**
+
+$ **git reset --HARD [hash_number]**: resetear todos los commits realizados hatsa cierto punto, indicado por el numero de hash (o hash del commit).
+
+### Buscando dentro de nuestra repo:
+
+$ **git grep [word]**: Bucar dentro de los archivos, alguna palabra indicada..
+
+$ **git grep -n [word]**: Buscar en que linea usé la plaabra indicada
+
+$ **git grep -c [word]**: Buscar la cantidad de veces usada la palabra indicada.
+
+$ **git grep -c "[tag]"**: Buscar por etiquetas, o dentro del código.
+
+$ **git log -S "[word]"**: Buscar dentro del historial de la repo, la palabra indicada.
+
+### Y algunos HACKS para GIT: (Harry Roberts)
+
+$ **git shortlog -sn --all**: Muestra la cantidad de commits realizados, por usuario colaborador dentro de la repo.
+
+$ **git shortlog -sn --all --no-merges**: Muestra la cantidad de commits, sin contabilizar los commit de merge.
+
+> **PROTIP**: Vamos a darle un alias a todo este último comando.
+
+$ **git config --global alias.stats "shortlog -sn --all --no-merges"**: Estamos creando un alias global para todo este comando de estadisticas de commits.
+
+$ **git blame -c [name_file]**: Este comando nos muestra 'quien hizo que cambios' dentro del archivo indicado.
+
+$ **git blame -c [name_file] -L[N1,N2] -c**: Este comando nos muestra lo mismo que el comando anterior, pero dandole el limite de lineas de código dentro del archivo indicado.
+
+$ **git branch -r**: Ver las ramas remotas.
+
+$ **git branch -a**: Ver todas las ramas, locales y remotos.
+
+Te recomiendo revisar los insights de tus repositorios en GitHub, asi como de otros repositorios, para inspiración. 😉
